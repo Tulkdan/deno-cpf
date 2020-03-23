@@ -1,4 +1,4 @@
-const CPF_LENGTH = 11
+import { CPF_LENGTH } from './constants.ts'
 
 function sumNumbers (list: Array<number>, diff = 0): number {
   const sum = list.reduce(
