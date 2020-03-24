@@ -24,7 +24,7 @@ for (let i = 0; i < 10; i++) {
     name: 'should generate a valid CPF with mask',
     fn(): void {
       const newCpf = GenerateCpf(true)
-      assertMatch(newCpf, /\d{3}\.\d{3}\.\d{3}-\d{2}/)
+      assertMatch(newCpf, /\d{3}\.\d{3}\.\d{3}-\d{2}aa/)
       assert(Validate(newCpf))
     }
   })
