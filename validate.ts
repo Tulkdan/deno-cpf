@@ -1,13 +1,5 @@
 import { CPF_LENGTH } from './constants.ts'
-
-function sumNumbers (list: Array<number>, diff = 0): number {
-  const sum = list.reduce(
-    (acc: number, n: number, index: number) => acc + n * (CPF_LENGTH - index - diff),
-    0
-  )
-
-  return sum * 10 % 11
-}
+import { findValidatorValue } from './utils.ts'
 
 function validateCpf (cpf: string): boolean {
   const SPECIAL_CHARS = /[.|-]/g
@@ -20,12 +12,12 @@ function validateCpf (cpf: string): boolean {
   const validators = chars.splice(chars.length - 2)
   const numbers = chars
 
-  const firstPart = sumNumbers(numbers, 1)
+  const firstPart = findValidatorValue(numbers, CPF_LENGTH - 1)
 
   if (firstPart !== validators[0])
     return false
 
-  const secondPart = sumNumbers([...numbers, validators[0]])
+  const secondPart = findValidatorValue([...numbers, validators[0]])
 
   if (secondPart !== validators[1])
     return false
