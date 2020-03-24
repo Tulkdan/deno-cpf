@@ -1,17 +1,22 @@
 import { CPF_LENGTH } from './constants.ts'
 import { findValidatorValue } from './utils.ts'
 
-function generateValidators (numbers: Array<number>, size = CPF_LENGTH): Array<number> {
-  const validator = findValidatorValue(numbers, size)
-  return [...numbers, validator]
-}
-
 function generateCpf (mask = false): string {
-  const randomNumbers = `${Math.floor(Math.random() * 1000000000)}`.split('').map(n => Number(n))
-  const cpfGenerated = generateValidators(generateValidators(randomNumbers, CPF_LENGTH - 1))
+  const MAX = 999999999
+  const MIN = 100000000
+  const randomNumbers = `${Math.floor(Math.random() * (MAX - MIN)) + MIN}`.split('').map(n => Number(n))
 
-  if (cpfGenerated.join('').length !== CPF_LENGTH)
+  const firstValidator = findValidatorValue(randomNumbers, CPF_LENGTH - 1)
+
+  if (firstValidator >= 10)
     return generateCpf(mask)
+
+  const secondValidator = findValidatorValue([...randomNumbers, firstValidator], CPF_LENGTH)
+
+  if (secondValidator >= 10)
+    return generateCpf(mask)
+
+  const cpfGenerated = [...randomNumbers, firstValidator, secondValidator]
 
   if (!mask)
     return cpfGenerated.join('')
